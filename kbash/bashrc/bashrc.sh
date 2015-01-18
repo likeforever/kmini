@@ -52,5 +52,4 @@ bind -m vi-insert '\c-a':beginning-of-line
 bind -m vi-insert '\c-b':backward-char
 bind -m vi-insert '\c-f':forward-char
 
-mount -t cifs -o username=like,password=5152535456 //192.168.16.1/work /work
 
