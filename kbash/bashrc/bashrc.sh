@@ -52,4 +52,4 @@ bind -m vi-insert '\c-a':beginning-of-line
 bind -m vi-insert '\c-b':backward-char
 bind -m vi-insert '\c-f':forward-char
 
-
+export LANG=C
