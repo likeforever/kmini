@@ -6,3 +6,5 @@ if [ -d ~/kbash/bashrc ]; then
   done
   unset i
 fi
+
+perl ~/kbash/bashrc/loadgdb.pl
