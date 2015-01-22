@@ -12,8 +12,9 @@ while (<$hfile>) {
 }
 
 if (1 != $load) {
-   print $hfile "source ./kbash/bashrc/like.gdb #kbash_loadgdb\n";
-   print $hfile "source ./kbash/bashrc/stl.gdb #kbash_loadgdb\n";
+   print $hfile "#kbash_loadgdb\n";
+   print $hfile "source ~/kbash/bashrc/like.gdb\n";
+   print $hfile "source ~/kbash/bashrc/stl.gdb\n";
 }
 
 close $hfile;
