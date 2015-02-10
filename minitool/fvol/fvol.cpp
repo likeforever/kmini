@@ -134,9 +134,17 @@ void _tmain (int argc, TCHAR *argv[])
    {
       fResult = DeleteVolumeMountPoint (szDriveLetterAndSlash);
 
-      if (!fResult)
-         _tprintf(TEXT("error %lu: couldn't remove %s\n"),
-                GetLastError(), szDriveLetterAndSlash);
+	  if (!fResult){
+
+		  fResult = DefineDosDevice (DDD_RAW_TARGET_PATH|DDD_REMOVE_DEFINITION, szDriveLetter,
+			  pszNTDevice);
+		  if (!fResult)
+		  {
+			  _tprintf(TEXT("error %lu: couldn't remove %s\n"),
+				  GetLastError(), szDriveLetterAndSlash);
+		  }
+	  }
+
    }
    else
    {
