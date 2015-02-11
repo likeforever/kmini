@@ -163,38 +163,9 @@ void _tmain (int argc, TCHAR *argv[])
       fResult = DefineDosDevice (DDD_RAW_TARGET_PATH, szDriveLetter,
                                  pszNTDevice);
 
-      if (fResult)
+      if (!fResult)
       {
-          // If GetVolumeNameForVolumeMountPoint fails, then 
-          // SetVolumeMountPoint will also fail. However, 
-          // DefineDosDevice must be called to remove the temporary symbolic link. 
-          // Therefore, set szUniqueVolume to a known empty string.
-
-         if (!GetVolumeNameForVolumeMountPoint (szDriveLetterAndSlash,
-                  szUniqueVolumeName,
-                  MAX_PATH))
-         {
-            DEBUG_PRINT(TEXT("GetVolumeNameForVolumeMountPoint failed"),
-                        GetLastError());
-            szUniqueVolumeName[0] = '\0';
-         }
-
-         fResult = DefineDosDevice ( 
-                      DDD_RAW_TARGET_PATH|DDD_REMOVE_DEFINITION|
-                      DDD_EXACT_MATCH_ON_REMOVE, szDriveLetter,
-                      pszNTDevice);
-
-         if (!fResult)
-            DEBUG_PRINT(TEXT("DefineDosDevice failed"), 
-                        GetLastError());
-
-         fResult = SetVolumeMountPoint (szDriveLetterAndSlash, 
-                        szUniqueVolumeName);
-
-         if (!fResult)
-            _tprintf (TEXT("error %lu: could not add %s\n"), 
-                      GetLastError(), 
-                    szDriveLetterAndSlash);
+            _tprintf (TEXT("error %lu: could not add [%s][%s], \n"), GetLastError(),  szDriveLetter, pszNTDevice);
       }
    }
 }
