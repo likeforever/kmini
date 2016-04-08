@@ -7,10 +7,10 @@ end
 set print thread-events off
 set confirm off
 set breakpoint pending on
-set follow-fork-mode child
-set detach-on-fork off
-set schedule-multiple on
-set follow-exec-mode new
+#set follow-fork-mode child
+#set detach-on-fork off
+#set schedule-multiple on
+#set follow-exec-mode new
 #set verbose off
 
 #set output-radix 0x10
