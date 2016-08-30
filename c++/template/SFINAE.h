@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ public:
 private:
 }; 
 
+//用户使用时，指定第一个模板参数，不指定第二个模板参数（默认为void）。根据这两个参数，在特化中找是否有最佳匹配，于是下面特化版本才有可能选中
 template<class _pg>
 class Progr<_pg, typename std::enable_if< std::is_integral<_pg>::value || std::is_floating_point<_pg>::value  >::type> : public ProgressBase<_pg>
 {
@@ -86,6 +88,86 @@ public:
 };
 
 
+
+template < typename T >
+struct yes_t
+{ int yes; };
+
+typedef char no_t;
+
+template < typename T >
+struct isClass
+{
+private:
+        //1. 这里只有声明， 因为用不到定义，link是就不会用
+        //2. value是static， 且sizeof求值, 所以这个函数也要是Static
+        template < typename U >
+        static yes_t  < int U::* > selector(U); 
+
+        static no_t selector(...);
+
+        static T* this_t();
+
+public:
+        static const bool value =
+                sizeof(selector(*this_t())) != sizeof(no_t); 
+};
+
+class find1{
+};
+
+class find2
+{
+public:
+        int find(const string& key){
+                return 0;
+        }
+private:
+};
+
+
+template < typename T >
+struct hasFind
+{
+private:
+        template < int (T::*)(const string&) >
+        struct yes_t
+        { int yes; };
+
+
+        //1. 这里只有声明， 因为用不到定义，link是就不会用
+        //2. value是static， 且sizeof求值, 所以这个函数也要是Static
+        //3. &U::find都出来的是一个函数指针，而不是一个类型。所以yes_t要用非类型模板
+        template < typename U >
+        static yes_t  < &U::find > selector(U);  
+
+        static no_t selector(...);
+
+        static T* this_t();
+
+public:
+        static const bool value =
+                sizeof(selector(*this_t())) != sizeof(no_t); 
+};
+
+template<typename T1, typename T2>
+class isSame{
+public:
+        static const int value = 1;
+};
+
+template<typename T>
+class isSame<T, T>{
+public:
+        static const int value = 2;
+};
+
+template< typename _T >
+class isSame<_T*, _T* >{
+public:
+        static const int value = 3;
+};
+
 class TestSfinae
 {
 public:
@@ -112,6 +194,16 @@ public:
                 int * k2 = m2.get();
                 void * k3 = m3.get();
 
+        }
+
+        static void testTrait(){
+                cout << isClass< vector<int> >::value << endl;
+                cout << hasFind< vector<int> >::value << endl;
+                cout << hasFind< find2 >::value << endl;
+
+                cout << isSame<int, string>::value << endl;
+                cout << isSame<int, int>::value << endl;
+                cout << isSame<int*, int*>::value << endl;
         }
 private:
 };

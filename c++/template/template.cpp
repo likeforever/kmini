@@ -17,6 +17,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
         TestSfinae::testClass();
         TestSfinae::testMemberFunction();
+        TestSfinae::testTrait();
 
         return 0;
 }
